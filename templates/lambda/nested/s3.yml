@@ -19,6 +19,11 @@ Mappings:
       Name: "simple-sinatra-stack-templates-home-dev"
     prod: 
       Name: "simple-sinatra-stack-templates-home-prod"
+  ZipBucketName: 
+    dev: 
+      Name: "lambda-function-zipfile-home-dev"
+    prod: 
+      Name: "lambda-function-zipfile-home-prod"
 
 Resources:
   Bucket:
@@ -36,8 +41,26 @@ Resources:
         - Key: "ChargeTo"
           Value: !Ref env
     DeletionPolicy: Delete
+  ZipBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !FindInMap
+        - ZipBucketName
+        - !Ref env
+        - Name
+      Tags:
+        - Key: "Project"
+          Value: "Provision-AWS-via-Lambda-Function"
+        - Key: "Createdby"
+          Value: "fen9li"
+        - Key: "ChargeTo"
+          Value: !Ref env
+    DeletionPolicy: Delete
 
 Outputs:
   BucketName:
     Value: !Ref 'Bucket'
     Description: Name of S3 bucket to home simple sinatra stack templates
+  ZipBucketName:
+    Value: !Ref 'ZipBucket'
+    Description: Name of S3 bucket to home lambda function zipfile
