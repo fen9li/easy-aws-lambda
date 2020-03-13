@@ -40,3 +40,4 @@ mkdir -p .github/workflows
 
 * git housekeeping and see the actions workflow starts as expected
 
+![setup-03](images/setup-03.png)
