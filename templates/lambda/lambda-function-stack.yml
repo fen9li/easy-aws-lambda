@@ -1,0 +1,23 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: video24 infrastructure stack
+Parameters:
+  env:
+    Description: Environment name to provision resources
+    Type: String
+    AllowedValues: ["dev", "prod"]
+    Default: dev
+
+Resources:
+  S3Stack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        env: !Ref env
+      TemplateURL: http://lambda-function-stack-templates-home.s3.amazonaws.com/nested/s3.yml
+      TimeoutInMinutes: '5'
+
+Outputs:
+  BucketName:
+    Value: !GetAtt S3Stack.Outputs.BucketName
+    Description: Name of S3 bucket to home lambda function stack templates
