@@ -29,4 +29,4 @@ jobs:
         stackTemplateUrl: "http://lambda-function-stack-templates-home.s3.amazonaws.com/lambda-function-stack.yml"
         env: dev
       run: |
-        ./.github/bin/stack-exists.sh
+        ./.github/bin/stack-exists.sh      
