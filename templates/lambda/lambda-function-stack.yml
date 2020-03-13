@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: video24 infrastructure stack
+Description: provision aws lambda function resource infrastructure stack
 Parameters:
   env:
     Description: Environment name to provision resources
@@ -25,6 +25,15 @@ Resources:
       TemplateURL: http://lambda-function-stack-templates-home.s3.amazonaws.com/nested/iam.yml
       TimeoutInMinutes: '5'  
 
+  LambdaStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        env: !Ref env
+        roleARN: !GetAtt IamStack.Outputs.RoleARN
+      TemplateURL: http://lambda-function-stack-templates-home.s3.amazonaws.com/nested/lambda.yml
+      TimeoutInMinutes: '5'
+
 Outputs:
   BucketName:
     Value: !GetAtt S3Stack.Outputs.BucketName
@@ -35,3 +44,6 @@ Outputs:
   RoleARN:
     Value: !GetAtt IamStack.Outputs.RoleARN
     Description: RoleARN of Lambda execution role  
+  LambdaFunctionName:
+    Value: !GetAtt LambdaStack.Outputs.LambdaFunctionName
+    Description: Name of Lambda function
