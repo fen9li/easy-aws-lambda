@@ -16,8 +16,22 @@ Resources:
         env: !Ref env
       TemplateURL: http://lambda-function-stack-templates-home.s3.amazonaws.com/nested/s3.yml
       TimeoutInMinutes: '5'
+  
+  IamStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      Parameters:
+        env: !Ref env
+      TemplateURL: http://lambda-function-stack-templates-home.s3.amazonaws.com/nested/iam.yml
+      TimeoutInMinutes: '5'  
 
 Outputs:
   BucketName:
     Value: !GetAtt S3Stack.Outputs.BucketName
     Description: Name of S3 bucket to home lambda function stack templates
+  RoleName:
+    Value: !GetAtt IamStack.Outputs.RoleName
+    Description: RoleName of Lambda execution role
+  RoleARN:
+    Value: !GetAtt IamStack.Outputs.RoleARN
+    Description: RoleARN of Lambda execution role  
