@@ -1,0 +1,22 @@
+name: upload aws lambda function
+
+on: 
+  push:
+    branches:
+    - develop
+    - feature
+
+jobs:
+  build:
+    name: zip new version package and upload aws lambda function - dev environment 
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v1
+    - name: zip new package and upload aws lambda function code
+      uses: ./upload_lambda_code
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.FEN9LI_AWS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.FEN9LI_AWS_KEY_SECRET }}
+        AWS_REGION: ap-southeast-2
