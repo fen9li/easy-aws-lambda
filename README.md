@@ -28,24 +28,15 @@ drwxrwxr-x. 2 fli fli     6 Mar 13 12:19 images
 
 * add aws access credentials to github secrets
 
+> Note: seems github action `aws-actions/configure-aws-credentials@v1` accepts only FIXED SECRETS NAME `${{ secrets.AWS_ACCESS_KEY_ID }}` & `${{ secrets.AWS_SECRET_ACCESS_KEY }}`. Have tried with `${{ secrets.FEN9LI_ACCESS_KEY_ID }}` & `${{ secrets.FEN9LI_SECRET_ACCESS_KEY }}`, BUT FAILED. 
+
 ![setup-02](images/setup-02.png)
 
 * setup actions workflow
 
 ```
-mkdir -p .github/{workflows,upload-lambda-funtion}
-
-[fli@192-168-1-4 easy-aws-lambda]$ tree .github/
-.github/
-├── upload_lambda_code
-│   ├── Dockerfile
-│   └── entrypoint.sh
-└── workflows
-    └── deploy-to-develop-env.yml
-
-2 directories, 3 files
-[fli@192-168-1-4 easy-aws-lambda]$
+mkdir -p .github/workflows
 ```
 
-* git housekeeping and see if the actions workflow starts as expected
+* git housekeeping and see the actions workflow starts as expected
 
