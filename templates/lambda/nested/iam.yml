@@ -14,7 +14,7 @@ Parameters:
     Default: dev
 
 Mappings: 
-  RoleName: 
+  roleName: 
     dev: 
       Name: "lambda-function-execution-role-dev"
     prod: 

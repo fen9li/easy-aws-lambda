@@ -3,11 +3,7 @@ name: upload aws lambda function
 on: 
   push:
     branches:
-<<<<<<< HEAD:.github/workflows/deploy-to-aws-prod.yml
     - master
-=======
-    - master  
->>>>>>> cbb4f53... sync lambda function stack templates to s3 bucket home:.github/workflows/deploy-to-aws.yml
 
 jobs:
   build:

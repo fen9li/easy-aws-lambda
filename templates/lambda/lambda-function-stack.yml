@@ -16,13 +16,14 @@ Resources:
         env: !Ref env
       TemplateURL: http://lambda-function-stack-templates-home.s3.amazonaws.com/nested/s3.yml
       TimeoutInMinutes: '5'
+  
   IamStack:
     Type: AWS::CloudFormation::Stack
     Properties:
       Parameters:
         env: !Ref env
       TemplateURL: http://lambda-function-stack-templates-home.s3.amazonaws.com/nested/iam.yml
-      TimeoutInMinutes: '5'
+      TimeoutInMinutes: '5'  
 
 Outputs:
   BucketName:
