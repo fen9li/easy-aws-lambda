@@ -30,5 +30,3 @@ jobs:
         env: dev
       run: |
         ./.github/bin/stack-exists.sh
-      
-

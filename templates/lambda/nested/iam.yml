@@ -1,0 +1,56 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: 'AWS CloudFormation Template for creating iam resources.' 
+
+Metadata: 
+  License: Apache-2.0
+
+Parameters:
+  env:
+    Description: Environment name to provision resources
+    Type: String
+    AllowedValues: ["dev", "prod"]
+    Default: dev
+
+Mappings: 
+  RoleName: 
+    dev: 
+      Name: "lambda-function-execution-role-dev"
+    prod: 
+      Name: "lambda-function-execution-role-prod"
+
+Resources:
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !FindInMap
+        - roleName
+        - !Ref env
+        - Name
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Tags: 
+        - Key: "Project"
+          Value: "Provision-AWS-via-Lambda-Function"
+        - Key: "Createdby"
+          Value: "fen9li"
+        - Key: "ChargeTo"
+          Value: !Ref env
+Outputs:
+  RoleName:
+    Value: !Ref LambdaExecutionRole
+    Description: Name of Lambda execution role
+  RoleARN:
+    Value: !GetAtt [LambdaExecutionRole, Arn]
+    Description: RoleARN of Lambda execution role
