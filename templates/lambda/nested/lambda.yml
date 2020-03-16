@@ -1,0 +1,74 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: 'AWS CloudFormation Template for creating lambda function resources.' 
+
+Metadata: 
+  License: Apache-2.0
+
+Parameters:
+  env:
+    Description: Environment name to provision resources
+    Type: String
+    AllowedValues: ["dev", "prod"]
+    Default: dev
+  roleARN:
+    Description: Lambda function execution role ARN
+    Type: String
+  zipfileKey:
+    Description: Lambda function zipfile key in zipfileBucket
+    Type: String
+    Default: provision-aws-resource-function.zip
+  functionHandler: 
+    Description: Lambda function handler
+    Type: String
+    Default: provision-aws-resource-function.lambda_handler
+
+Mappings: 
+  FunctionName: 
+    dev: 
+      Name: "provision-aws-resource-function-dev"
+    prod: 
+      Name: "provision-aws-resource-function-prod"
+  zipfileBucket:
+    dev: 
+      Name: "lambda-function-zipfile-home-dev"
+    prod: 
+      Name: "lambda-function-zipfile-home-prod"
+
+Resources:
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !FindInMap
+        - FunctionName
+        - !Ref env
+        - Name
+      Description: LambdaFunctioni of python3.6
+      Runtime: python3.6
+      MemorySize: 128
+      Timeout: 10
+      Code:
+        S3Bucket: !FindInMap
+          - zipfileBucket
+          - !Ref env
+          - Name
+        S3Key: !Ref zipfileKey
+      Handler: !Ref functionHandler
+      Role: !Ref roleARN
+      Environment:
+        Variables:
+          ENV:
+            Fn::Sub: ${env}
+          TZ: UTC
+      Tags: 
+        - Key: "Project"
+          Value: "Provision-AWS-via-Lambda-Function"
+        - Key: "Createdby"
+          Value: "fen9li"
+        - Key: "ChargeTo"
+          Value: !Ref env
+Outputs:
+  LambdaFunctionName:
+    Value: !Ref LambdaFunction
+    Description: Name of Lambda function

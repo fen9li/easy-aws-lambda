@@ -23,6 +23,12 @@ jobs:
     - name: Sync 'lambda-function-stack-dev' templates to aws s3 bucket 'lambda-function-stack-templates-home'
       run: |
         aws s3 sync templates/lambda s3://lambda-function-stack-templates-home --delete
+    - name: zip lambda function python code and sync it to 'lambda-function-zipfile-home-dev' bucket
+      run: |
+        zip provision-aws-resource-function.zip provision-aws-resource-function.py
+        mkdir zipfile
+        mv provision-aws-resource-function.zip zipfile/
+        aws s3 sync zipfile s3://lambda-function-zipfile-home-dev --delete
     - name: Create stack if not exists 
       env:
         stackName: lambda-function-stack-dev
