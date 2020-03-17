@@ -34,6 +34,6 @@ jobs:
         stackName: lambda-function-stack-dev
         stackTemplateUrl: "http://lambda-function-stack-templates-home.s3.amazonaws.com/lambda-function-stack.yml"
         env: dev
-        zipfileKey: provision-aws-resource-function-${checksum}.zip
+        zipfileKey: "provision-aws-resource-function-${checksum}.zip"
       run: |
         ./.github/bin/stack-exists.sh      
