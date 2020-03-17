@@ -40,6 +40,7 @@ Resources:
       Path: /
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
       Tags: 
         - Key: "Project"
           Value: "Provision-AWS-via-Lambda-Function"
