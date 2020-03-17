@@ -28,13 +28,23 @@ aws s3 mb s3://lambda-function-zipfile-home-prod --profile fen9li
 aws s3api put-bucket-tagging --bucket lambda-function-zipfile-home-prod --tagging 'TagSet=[{Key=Createdby,Value=fen9li},{Key=Project,Value=Provision-AWS-via-Lambda-Function},{Key=ChargeTo,Value=dev}]' --profile fen9li
 ```
 
-## to manually trigger a workflow
+## create s3 buckets to home simple sinatra stack template
 
+> Note: create these s3 bucket manually    
+> Note: `simple-sinatra-stack-templates-home-dev` for develop environment and `simple-sinatra-stack-templates-home-prod` for production environment
+
+* create `simple-sinatra-stack-templates-home-x` with tags
 ```
-git commit --allow-empty -m "wakey wakey GitHub Actions"
+aws s3 mb s3://simple-sinatra-stack-templates-home-dev --profile fen9li
+
+aws s3api put-bucket-tagging --bucket simple-sinatra-stack-templates-home-dev --tagging 'TagSet=[{Key=Createdby,Value=fen9li},{Key=Project,Value=simple-sinatra},{Key=ChargeTo,Value=dev}]' --profile fen9li
+
+aws s3 mb s3://simple-sinatra-stack-templates-home-prod --profile fen9li
+
+aws s3api put-bucket-tagging --bucket simple-sinatra-stack-templates-home-prod --tagging 'TagSet=[{Key=Createdby,Value=fen9li},{Key=Project,Value=simple-sinatra},{Key=ChargeTo,Value=dev}]' --profile fen9li
 ```
 
-## zip dependency package and upload the zip file to GitHub as artifacts
+## (optional) zip dependency package and upload the zip file to GitHub as artifacts
 
 * create `Dockerfile`, `entrypoint.sh ` &  `requirements.txt`
 ```
