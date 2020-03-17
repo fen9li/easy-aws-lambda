@@ -7,6 +7,9 @@ Parameters:
     Type: String
     AllowedValues: ["dev", "prod"]
     Default: dev
+  zipfileKey: 
+    Description: Lambda function zip file key in S3 bucket, appending checksum to zipfile base name  
+    Type: String
 
 Resources:
   S3Stack:
@@ -31,6 +34,7 @@ Resources:
       Parameters:
         env: !Ref env
         roleARN: !GetAtt IamStack.Outputs.RoleARN
+        zipfileKey: !Ref zipfileKey
       TemplateURL: http://lambda-function-stack-templates-home.s3.amazonaws.com/nested/lambda.yml
       TimeoutInMinutes: '5'
 
