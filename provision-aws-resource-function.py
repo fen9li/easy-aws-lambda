@@ -4,13 +4,13 @@ import json
 def lambda_handler(event, context):
 
     s3 = boto3.resource('s3')
-    bucketname = 'lambda-function-stack-templates-home'
-    my_bucket = s3.Bucket(bucketname)
-
-    for obj in my_bucket.objects.all():
-        print(obj.key)
-
+    b = 'lambda-function-stack-templates-home'
+    objkeys = []
+    
+    for obj in s3.Bucket(b).objects.all():
+        objkeys.append(obj.key)
+        
     return {
         'statusCode': 200,
-        'body': json.dumps('The contents in bucket ' + bucketname + ' are :') 
+        'body': json.dumps(objkeys)
     }
