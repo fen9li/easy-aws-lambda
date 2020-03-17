@@ -22,18 +22,24 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-southeast-2
     - name: zip lambda function python code and sync it to 'lambda-function-zipfile-home-prod' bucket
+      id: vars
       run: |
         mv dist/provision-aws-resource-function.zip ..
         zip provision-aws-resource-function.zip provision-aws-resource-function.py
         checksum=`cksum provision-aws-resource-function.py | cut -d' ' -f1`
-        mv provision-aws-resource-function.zip provision-aws-resource-function-${checksum}.zip
-        aws s3 cp provision-aws-resource-function-${checksum}.zip s3://lambda-function-zipfile-home-prod
+        export zipfilename="provision-aws-resource-function-${checksum}.zip"
+        mv provision-aws-resource-function.zip ${zipfilename}
+        aws s3 cp ${zipfilename} s3://lambda-function-zipfile-home-prod
+        echo ::set-env name=ZIPFILEKEY::"${zipfilename}"
+    - name: sync cloudformation templates to s3 bucket `lambda-function-stack-templates-home`
+      run: |
+        aws s3 sync templates/lambda s3://lambda-function-stack-templates-home --delete
     - name: Create stack if not exists, update stack if exists 
       env:
         stackName: lambda-function-stack-prod
         stackTemplateUrl: "http://lambda-function-stack-templates-home.s3.amazonaws.com/lambda-function-stack.yml"
         env: prod
-        zipfileKey: provision-aws-resource-function-${checksum}.zip
+        zipfileKey: ${{ env.ZIPFILEKEY }}
       run: |
         ./.github/bin/stack-exists.sh
         
